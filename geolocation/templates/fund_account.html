@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!--<form class="form-inline" method="POST" action="{{ url_for('sell_select') }}">
+  <div class="form-group">
+    <div class="form-group">
+        <span class="input-group-addon" style="margin-right: 10px;">Select</span><br>
+            <select name="comp_select" class="selectpicker form-control" style="padding-right: 200px;">
+              <option value="WATER">water</option>
+              <option value="CAR">car</option>
+              <option value="MOTOR">motor</option>
+            </select>
+    </div>
+    <button type="submit" class="btn btn-default" style="margin-left: 10px;">Submit</button>
+  </div>
+</form>-->
+
+<h3 style="color: white;">Balance: Tsh <small style="background-color:#00cc00;border-radius:25%;color: blue;">{{amounts}}</small></h3>
+<div class="circle">
+  <div class="circle__inner">
+    <div class="circle__wrapper">
+      <div class="circle__content"><small>{{ amounts }}</small></div>
+    </div>
+  </div>
+</div>
+
+<!--<div style="background-color: black;border-radius: 50px;height: 10vw;width: 10vw;">
+  <h1 style="color: blue"><br>&nbspTsh {{ amounts }}</h1>
+</div>-->
+
+
+
+<article class="media content-section">
+
+<div class="media-body">
+<div class="article-metadata">
+
+<small>depost fund </small>
+<article class="media content-section">
+  <form class="form-inline" method="GET" action="{{ url_for('payment_acc')}}">
+  <button type="submit" class="btn btn-primary">depost</button>
+  </form>
+  <div class="media-body">
+    <div class="article-metadata">
+      <div class="post">
+      </div>
+    </div>
+  </div>
+</article>
+
+  <small>send money</small>
+  <article class="media content-section">
+      <form class="form-inline" method="GET" action="send_fund">
+        <button type="submit" class="btn btn-primary">send money</button>
+      </form>
+      <div class="media-body">
+        <div class="article-metadata">
+          <div class="post">
+          </div>
+        </div>
+      </div>
+  </article>
+
+  <small>withdraw fund </small>
+  <article class="media content-section">
+      <form class="form-inline" method="GET" action="withdraw_fund">
+        <button type="submit" class="btn btn-primary">withdraw</button>
+      </form>
+      <div class="media-body">
+        <div class="article-metadata">
+          <div class="post">
+          </div>
+        </div>
+      </div>
+  </article>
+
+
+</div>
+</div>
+</article>
+
+
+
+
+
+{% endblock content %}

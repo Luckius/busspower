@@ -1,0 +1,209 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<article class="media content-section">
+  <article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+<img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/'+ user.image_file) }}">
+  <div class="article-metadata">
+    <h6>
+      <a class="mr-2" href="#" style="color:black;">{{ user.username }}</a>&nbsp
+    <h6>
+    <small class="text-muted">Active: {{ moment(user.last_seen).fromNow() }}</small><br><br>
+    <div style="text-align: right;"><a class="btn btn-info mb-4" href="{{ url_for('send_message', recipient=user.username) }}">send message</a></div>
+    <small class="text-muted">Registered: {{ moment(user.joined_day).format('lll') }}</small>
+  </div>
+</article>
+</div>
+</div>
+</article>
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+<article class="media content-section">
+    <div class="mr-2">
+        <small>customers vote<h6>{{ user.followers.count() }}<h6></small><br>
+    </div>
+
+    <!--follow/unfollow button -->
+    {% if current_user.is_authenticated %}
+        {% if user != current_user %}
+            {% if not user in current_user.followed %}
+              <small><a href="{{url_for('follow',username=user.username) }}" class="small">
+              &nbsp &nbspBest person</a></small>
+            {% else %}
+              <small><a href="{{ url_for('unfollow', username=user.username) }}" class="small">
+              &nbsp &nbspRemove</a></small>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+  &nbsp&nbsp&nbsp&nbsp<article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <h6>
+            <small>Skills {{ user.username}} has:</small>&nbsp{% for desc in p_descrptn %}{{desc.title }} {% endfor %}
+          <h6>
+        </div>
+        <div class="post">{% for desc in p_descrptn %}<p>{{ desc.content }}</p>{% endfor %}
+        </div>
+      </div>
+  </article>
+
+</article>
+
+
+    <article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+      {% for i in p_descrptn %}
+          {% if i == i %}
+          <article class="media content-section">
+          <div class="media-body">
+          <div class="article-metadata">
+          <div class="post">
+            <img class="message-image" src="{{ i.image_file }}">
+          </div>
+          </div>
+          </div>
+          </article>
+          {% endif %}
+      {% endfor %}
+    </div>
+    </div>
+    </article>
+
+</div>
+</div>
+</article>
+
+
+
+
+<p id="demo"></p>
+<p id="mydemo"></p>
+
+
+
+<!--<script> 
+  var directionsService = new google.maps.DirectionsService(),
+  directionsDisplay = new google.maps.DirectionsRenderer(),
+  createMap = function (start) {
+    var travel = {
+      origin : (start.coords)? new google.maps.LatLng(start.lat, start.lng) : start.address,
+      destination : "Alexanderplatz, Berlin",
+      travelMode : google.maps.DirectionsTravelMode.DRIVING
+      // Exchanging DRIVING to WALKING above can prove quite amusing 🙂
+    },
+
+    mapOptions = {
+      zoom: 10,
+      // Default view: downtown Stockholm
+      center : new google.maps.LatLng(59.3325215, 18.0643818),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById("map-directions"));
+
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(result);
+    }
+};
+
+  </script>-->
+
+
+    <script>
+      var mylat = '{{ mylat }}';
+      var mylats = parseFloat(mylat)
+      var mylong = '{{ mylng }}';
+      var mylongs = parseFloat(mylong)
+      var mymarker = '{{ current_user.username }}';
+      var usermarker = '{{ user.username }}'
+      //need to be added the customer name on marker
+      var userlat = '{{ lat }}';
+      var userlng = '{{ lng }}';
+      var userlats = parseFloat(userlat)
+      var userlngs = parseFloat(userlng)
+
+      //console.log(mylats)
+      //console.log(mylongs)
+      var map;
+      var marker
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: mylats , lng: mylongs },
+          zoom: 8
+        });
+        //marker = new google.maps.Marker({map:map, position:{lat: mylats  , lng: mylongs },title:mymarker});
+
+        var directionsService = new google.maps.DirectionsService();
+        var directionsDisplay = new google.maps.DirectionsRenderer({
+          map: map
+        });
+
+        directionsDisplay.setMap(map);
+
+        var request = {
+          origin: {lat:mylats, lng:mylongs},
+          destination: {lat:userlats , lng:userlngs},
+          travelMode: google.maps.DirectionsTravelMode.DRIVING
+        };
+
+        directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          }
+        });
+
+
+        infoWindow = new google.maps.InfoWindow;
+        infoWindow.setPosition({lat: userlats,lng: userlngs});
+        infoWindow.setContent('<h6>{{ user.username }}<h6>');
+        infoWindow.open(map);
+        //map.setCenter(pos);
+
+
+        infoWindow0 = new google.maps.InfoWindow;
+        infoWindow0.setPosition({lat: mylats,lng: mylongs});
+        infoWindow0.setContent('<h6>You<h6>');
+        infoWindow0.open(map);
+      }
+
+    </script>
+
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAemSAE8epiYtrVedY_lFYNJHB094F0M10&callback=initMap"
+    async defer></script>-->
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACAQRu4gbCAeLBWWPLI5HEb8dxSfNYCgw&callback=initMap"type="text/javascript">
+    </script>
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <button class="btn btn-primary" onclick="myFunction()">hide/show map</button>
+      <div id="map"></div>
+    </div>
+  </div>
+</article>
+
+
+  <script>
+    function myFunction() {
+      var x = document.getElementById("map");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+  </script>
+
+
+{% endblock content %}

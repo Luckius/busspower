@@ -1,0 +1,705 @@
+body {
+  background: #003300/*#897db9*/;
+  color: #333333;
+  margin-top: 5rem;
+  position: relative;
+  display:flex;
+  flex-direction:column;
+  /*additional in desgin*/
+  animation: fadeInAnimation ease 0.5s; 
+  animation-iteration-count: 2; 
+  animation-fill-mode: forwards; 
+
+}
+
+@keyframes fadeInAnimation { 
+    0% { 
+        opacity: 0; 
+    } 
+    100% { 
+        opacity: 1; 
+    } 
+}
+
+ 
+
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+
+}
+
+
+.bg-steel {
+  background-color: #00cc00/*#9acd32*/;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: blue;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #f2f2f2/*#ffffff*/;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.article-title {
+  color: #444444;
+  white-space: pre-wrap;
+  /*max-width:600px;*/
+  /*word-break: normal */;
+  word-break: break-word;
+  /*overflow-wrap: break-word;*/
+  overflow-wrap: normal;
+
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+  max-width: 700px;
+  width: 700px;
+  overflow-wrap: normal;
+  /*word-break: break-all;*/
+  /*overflow-wrap: break-word;*/
+  word-break: break-word;
+
+}
+
+.media-body {
+  overflow-wrap: break-word;
+}
+
+.post {
+  white-space: pre-wrap;
+  /*max-width:600px;*/
+  word-break: break-word;
+  /*overflow-wrap: break-word;*/
+  /*word-break: normal;*/
+  overflow-wrap: normal;
+  color: #000;
+  /*font-size: 20px;*/
+  }
+
+
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.message-image {
+  height: auto;
+  width: auto;
+  max-height:100%;
+  max-width:100%;
+  /*margin-right: 20px;*/
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  color: #000;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background: no-repeat fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.jokamedia {
+  background-color: white;
+  text-align: center;
+  margin-top: 25%
+  margin: 0;
+  text-shadow: 0px 0px 10px rgba(255,255,255,0.6),
+  0px 0px 30px rgba(255,255,255,0.4), 0px 0px 50px rgba(255,255,255,0.3),
+  0px 0px 180px rgba(255,255,255,0.3); color: rgba(255,255,255,0); font: 80px 'ChunkFiveRegular';
+  text-shadow: -10px 10px 0px pink,
+             -20px 20px 0px yellow,
+             -30px 30px 0px black;
+  text-align: center;
+  color: blue;
+  font-size: 260px;
+  max-width:100%;
+  overflow-x: hidden;
+}
+
+
+.circle {
+  position: relative;
+  display: block;
+  margin: 2em 0;
+  background-color: transparent;
+  color: blue/*#222*/;
+  text-align: center;
+}
+
+.circle:after {
+  display: block;
+  padding-bottom: 26%;
+  width: 25%;
+  height: 0;
+  border-radius: 50%;
+  background-color: #00cc00/*#ddd*/;
+  content: "";
+}
+
+.circle__inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 25%;
+  height: 100%;
+}
+
+.circle__wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.circle__content {
+  display: table-cell;
+  padding: 1em;
+  vertical-align: middle;
+  text-align: center;
+
+}
+
+
+.loader-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #242f3f;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  border: 4px solid #Fff;
+  animation: loader 2s infinite ease;
+}
+.loader-inner {
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+  background-color: #fff;
+  animation: loader-inner 2s infinite ease-in;
+}
+@keyframes loader {
+  0% { transform: rotate(0deg);}
+  25% { transform: rotate(180deg);}
+  50% { transform: rotate(180deg);}
+  75% { transform: rotate(360deg);}
+  100% { transform: rotate(360deg);}
+}
+@keyframes loader-inner {
+  0% { height: 0%;}
+  25% { height: 0%;}
+  50% { height: 100%;}
+  75% { height: 100%;}
+  100% { height: 0%;}
+}
+
+
+
+
+html, body{ height:100%; margin:0; }
+header{ height:50px; background:#00cc00;margin-bottom: 90px;}
+footer{ height:70px; background:#00cc00;margin-bottom:0}
+
+
+
+
+* {box-sizing: border-box;}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* the second chat pop up*/
+.chat-popup2 {
+  /*display: none;*/
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width textarea */
+/*.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  resize: none;
+  min-height: 100px;
+}*/
+
+textarea {
+  min-height: 2em;
+  max-height: 50vh;
+  width: 100%;
+}
+
+
+.inputname {
+  background: #f1f1f1;
+  min-height: 50px;
+  padding: 1px;
+  border: none;
+  resize: none;
+}
+
+/* When the textarea gets focus, do something */
+/*.form-container textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}/*
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+/*wtforms design for content*/
+#larger {
+font-size: 15px;
+min-height: 200px;
+width: 100%;
+background: white;;
+border: none;
+/*margin: 5px 0 22px 0;*/
+
+
+}
+
+#middle {
+font-size: 15px;
+}
+
+/*for title wtforms*/
+#title-larger {
+font-size: 15px;
+min-height: 70px;
+width: 100%;
+background: white;;
+border: none;
+/*margin: 5px 0 22px 0;*/
+
+
+}
+
+#title-middle {
+font-size: 15px;
+}
+
+/* the select properties goes here*/
+:root {
+  --radius: 2px;
+  --baseFg: dimgray;
+  --baseBg: white;
+  --accentFg: #006fc2;
+  --accentBg: #bae1ff;
+}
+
+.theme-pink {
+  --radius: 2em;
+  --baseFg: #c70062;
+  --baseBg: #ffe3f1;
+  --accentFg: #c70062;
+  --accentBg: #ffaad4;
+}
+
+.theme-construction {
+  --radius: 0;
+  --baseFg: white;
+  --baseBg: black;
+  --accentFg: black;
+  --accentBg: orange;
+}
+
+select {
+  font: 400 12px/1.3 sans-serif;
+  -webkit-appearance: none;
+  appearance: none;
+  color: var(--baseFg);
+  border: 1px solid var(--baseFg);
+  line-height: 1;
+  outline: 0;
+  padding: 0.65em 2.5em 0.55em 0.75em;
+  border-radius: var(--radius);
+  background-color: var(--baseBg);
+  background-image: linear-gradient(var(--baseFg), var(--baseFg)),
+    linear-gradient(-135deg, transparent 50%, var(--accentBg) 50%),
+    linear-gradient(-225deg, transparent 50%, var(--accentBg) 50%),
+    linear-gradient(var(--accentBg) 42%, var(--accentFg) 42%);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 1px 100%, 20px 22px, 20px 22px, 20px 100%;
+  background-position: right 20px center, right bottom, right bottom, right bottom;   
+}
+
+select:hover {
+  background-image: linear-gradient(var(--accentFg), var(--accentFg)),
+    linear-gradient(-135deg, transparent 50%, var(--accentFg) 50%),
+    linear-gradient(-225deg, transparent 50%, var(--accentFg) 50%),
+    linear-gradient(var(--accentFg) 42%, var(--accentBg) 42%);
+}
+
+select:active {
+  background-image: linear-gradient(var(--accentFg), var(--accentFg)),
+    linear-gradient(-135deg, transparent 50%, var(--accentFg) 50%),
+    linear-gradient(-225deg, transparent 50%, var(--accentFg) 50%),
+    linear-gradient(var(--accentFg) 42%, var(--accentBg) 42%);
+  color: var(--accentBg);
+  border-color: var(--accentFg);
+  background-color: var(--accentFg);
+}
+
+
+/*chat area templates */
+.comments-main{
+  background: #FFF;
+}
+.comment time, .comment:hover time,.icon-rocknroll, .like-count {
+  -webkit-transition: .25s opacity linear;
+  transition: .25s opacity linear;
+}
+.comments-main ul li{
+  list-style: none;
+}
+.comments .comment {
+  padding: 5px 10px;
+  background: #00AF90;
+}
+.comments .comment:hover time{
+  opacity: 1;
+}
+.comments .user-img img {
+  width: 50px;
+  height: 50px;
+}
+.comments .comment h4 {
+  display: inline-block;
+  font-size: 16px;
+}
+.comments .comment h4 a {
+  color: #404040;
+  text-decoration: none;
+}
+.comments .comment .icon-rocknroll {
+  color: #545454;
+  font-size: .85rem;
+}
+.comments .comment .icon-rocknroll:hover {
+  opacity: .5;
+}
+.comments .comment time,.comments .comment .like-count,.comments .comment .icon-rocknroll {
+  font-size: .75rem;
+  opacity: 0;
+}
+.comments .comment time, .comments .comment .like-count {
+  font-weight: 300;
+}
+.comments .comment p {
+  font-size: 13px;
+}
+.comments .comment p .reply {
+  color: #BFBFA8;
+  cursor: pointer;
+}
+.comments .comment .active {
+  opacity: 1;
+}
+.icon-rocknroll {
+  background: none;
+  outline: none;
+  cursor: pointer;
+  margin: 0 .125rem 0 0;
+}
+.comments .comment:hover .icon-rocknroll,.comments .comment:hover .like-count {
+  opacity: 1;
+}
+.comment-box-main{
+  background: #CA1D5F;
+}
+
+
+/*The index button for users*/
+.glow-on-hover {
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #000
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #385CD0;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+
+
+/* Trick */
+/*body{
+  display:flex;
+  flex-direction:column;
+}*/
+
+/*Footer*/
+
+footer{
+  margin-top:auto;
+}
+
+
+
+
+/*footer p {
+  opacity: .7;
+}*/
+.foot {
+  overflow-x: hidden;
+  text-align: center;
+}
+
+
+
+
+/*Media Queries*/
+@media (max-width: 720px) {
+
+  .article-content {
+    width: 100%;
+    word-break: break-word;
+    text-overflow: normal;  
+
+  }
+
+  .message-image {
+    height: auto;
+    width: auto;
+    max-height:100%;
+    max-width:100%;
+    margin-right: 20px;
+    margin-bottom: 16px;
+    background: no-repeat fixed;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: contain;
+
+  }
+
+
+  .content-section {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .jokamedia {
+    max-width:690px;
+    background-color: white;
+    text-align: center;
+    margin-top: 25%
+    margin: 0;
+    text-shadow: 0px 0px 10px rgba(255,255,255,0.6),
+    0px 0px 30px rgba(255,255,255,0.4), 0px 0px 50px rgba(255,255,255,0.3),
+    0px 0px 180px rgba(255,255,255,0.3); color: rgba(255,255,255,0); font: 80px 'ChunkFiveRegular';
+    text-shadow: -10px 10px 0px pink,
+               -20px 20px 0px yellow,
+               -30px 30px 0px black;
+    text-align: center;
+    color: blue;
+    font-size: 260px;
+    overflow-x: hidden;
+
+  }
+
+
+}
+
+
+@media only screen and (min-device-width: 400px) {
+  .message-image {
+    max-width: 100%;
+  }
+
+
+}
+
+
+@media (min-width: 480px) {
+  .circle__content {
+    font-size: 2em;
+  }
+}
+
+@media (min-width: 768px) {
+  .circle__content {
+    font-size: 4em;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 480px){
+  .comments .comment h4 {
+    font-size: 12px;
+  }
+  .comments .comment p{
+    font-size: 11px;
+  }
+  .comment-box-main .send-btn button{
+    margin-left: 5px;
+  }
+}

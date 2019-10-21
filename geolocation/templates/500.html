@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+
+   <article class="media content-section">
+  <div class="media-body">
+  <div class="article-metadata">
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+      	  	<h1>Something went wrong</h1>
+        <div class="post">
+        	Sorry something went wrong in our application. Try the following
+        	<ul>
+        		<li><small>Wait and try gain later </small></li>
+        		<li><small>Logout and login again </small></li>
+        		<li><small>Allow our application  to acces location on your device</small></li>
+        	</ul>
+        	or click here to return to the homepage <a href="{{url_for('index')}}"> Home</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+{% endblock content %}

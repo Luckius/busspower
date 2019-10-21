@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  {% for withdraw in withdrawn.items %}
+      <article class="media content-section">
+      <div class="media-body">
+      <div class="article-metadata">
+      <small class="text-muted">{{ moment(withdraw.date_posted).fromNow() }}</small>
+      <div class="post">
+          <p><h6>{{ withdraw.fund_withdraw }}</h6></p>
+      </div>
+      </div>
+      </div>
+      </article>
+  {% endfor %}
+</div>
+</div>
+</article>
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+  {% for page_num in withdrawn.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+      {% if withdrawn.page == page_num %}
+        <a class="btn btn-info mb-4" href="{{ url_for('admin_show_withdraw', page=page_num) }}">{{ page_num }}</a>
+      {% else %}
+        <a class="btn btn-outline-info mb-4" href="{{ url_for('admin_show_withdraw', page=page_num) }}">{{ page_num }}</a>
+      {% endif %}
+    {% else %}
+      ...
+    {% endif %}
+  {% endfor %}
+</div>
+</div>
+</article>
+
+{% endblock content %}

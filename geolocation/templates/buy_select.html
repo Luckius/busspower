@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  <p>Select a new car from the list.</p>&nbsp&nbsp
+  <article class="media content-section">
+  <form id="form1" action="/buy_select" method="POST" enctype="multipart/form-data">
+  <div class="form-group">
+    <div class="form-group">
+      <select id="mySelect" name = "cars" class="theme-pink" style="padding-right:10px;">
+        <option value="Audi">Audi</option>
+        <option value="BMW">BMW</option>
+        <option value="Mercedes">Mercedes</option>
+        <option value="Volvo">Volvo</option>
+      </select>
+    </div>
+  <input type="submit" value="Submit" class="btn btn-outline-info" style="background-color: pink;">
+  </div>
+</form>
+</article>
+<div class="post">
+  <small>See people selling what you need click here</small>
+  <form class="form-inline" method="GET" action="the_sellers">
+    <button type="submit" class="btn btn-primary">sellers</button>
+  </form>
+</div>
+</div>
+</div>
+</article>
+
+
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  {% for i in buy_selected %}
+      {% if i == i %}
+      <article class="media content-section">
+      <div class="media-body">
+      <div class="article-metadata">
+      {% if current_user == i.author %}
+        <small><a class="mr-2" href="{{ url_for('del_buy_selected', post_id=i.id) }}">&nbsp &nbspdelete</a></small>
+      {% endif %}
+      <div class="post">
+          <p> Thanks {{ i.author.username }} for being interested in buying <h6>{{ i.select_one }}</h6>customers will get to you shortly </p>
+      </div>
+      </div>
+      </div>
+      </article>
+      {% endif %}
+  {% endfor %}
+</div>
+</div>
+</article>
+
+
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  {% for i in selected %}
+      {% if i == i %}
+      <article class="media content-section">
+      <div class="media-body">
+      <div class="article-metadata">
+      {% if current_user == i.author %}
+        <small><a class="mr-2" href="{{ url_for('del_buy_selected', post_id=i.id) }}">&nbsp &nbspdelete</a></small>
+      {% endif %}
+      <div class="post">
+          <p> Thanks {{ i.author.username }} for being interested in buying <h6>{{ i.select_one }}</h6>customers will get to you shortly </p>
+      </div>
+      </div>
+      </div>
+      </article>
+      {% endif %}
+  {% endfor %}
+</div>
+</div>
+</article>
+
+
+</div>
+
+
+
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<div style="background-color: black;border-radius: 50px;">
+  <h1 style="color: white;">Tsh {{ amounts }}</h1>
+</div>
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  <article class="media content-section">
+  <form id="form1" action="{{ url_for('withdraw_fund')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
+  <div class="form-group">
+    Amount:<br>
+    <input type="number" id="" placeholder="Amount" name="mypay" min="0" max="500000" required><br>
+    <br>
+    Secrete word:<br>
+    <input type="text" id="" placeholder="Enter name" name="thename" required=""><br><br>
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </div>
+</form>
+</article>
+</div>
+</div>
+</article>
+
+
+
+
+
+{% endblock content %}

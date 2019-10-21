@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+
+<p id="demo"></p>
+<p id="mydemo"></p>
+
+
+
+  <script>
+  var x = document.getElementById("demo");
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(showPosition, showError,
+        { enableHighAccuracy: true, timeout: 31000, maximumAge: 90000 });
+    } else { 
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  }
+
+  function showPosition(position) {
+    //x.innerHTML = "Latitude: " + position.coords.latitude + 
+    //"<br>Longitude: " + position.coords.longitude;
+    let mylat = position.coords.latitude;
+    let mylng = position.coords.longitude;
+    myPosition(mylat,mylng);
+    console.log(mylat)
+    console.log(mylng)
+    //myPositions(mylat,mylng);
+  }
+
+
+
+  function showError(error) {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        x.innerHTML = "User denied the request for Geolocation."
+        break;
+      case error.POSITION_UNAVAILABLE:
+        x.innerHTML = "Location information is unavailable."
+        break;
+      case error.TIMEOUT:
+        x.innerHTML = "The request to get user location timed out."
+        break;
+      case error.UNKNOWN_ERROR:
+        x.innerHTML = "An unknown error occurred."
+        break;
+    }
+  }
+
+
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   
+  <script>
+      function myPosition(pos1,pos2) {
+       let lat = pos1 ;
+       let lng = pos2;
+       //console.log(lat);
+       //console.log(lng);
+
+       $.ajax({
+            url: "/api/" + lat +"/"+ lng + "/"
+        }).done(function(res) {
+            console.log(res.lat);
+        });
+    }
+
+  </script>
+
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <article class="media content-section">
+      <div class="post">
+      <h6> Your location is</h6>
+        {{ adr }}<br>
+        <small>{{ continent }} , {{ country }} , {{ city }}</small>
+      </div>
+    </article>
+    </div>
+  </div>
+</article>
+
+
+
+
+{% for buy_s in far_buyers %}
+  <article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+    </div>
+    <div class="post">{{ buy_s }}</div>
+  </div>
+</article>
+{% endfor %}
+
+
+{% endblock content %}

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Refresh" content="60">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>BussPower - {{ title }}</title>
+    {% else %}
+        <title>BussPower</title>
+    {% endif %}
+
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+
+    <style>
+      #map {
+        height: 400px;
+        margin-top: 10px;
+      }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a href="#"><IMG SRC="{{url_for('static',filename='busspower_logo.png')}}" ALT="some text" WIDTH=70 HEIGHT=50 style="background-color: white;"></a>
+          <!--<a class="navbar-brand mr-4" href="/">BussPower</a>-->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            {% if current_user.is_authenticated %}
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('index') }}">Home</a>
+            </div>
+            {% endif %}
+
+
+            {% if current_user.is_authenticated %}
+              <a href="{{ url_for('pvtmessages') }}">
+              {{ ('Chats') }}
+              {% set new_messages = current_user.new_messages() %}
+                  <span id="message_count" class="badge"
+                      style="visibility: {% if new_messages %}visible
+                                         {% else %}hidden {% endif %}; background-color:red;color:white;">
+                      {{ new_messages }}
+                  </span>
+              </a>
+            {% endif %}
+
+           <script>
+               function set_message_count(n) {
+                   $('#message_count').text(n);
+                   $('#message_count').css('visibility', n ? 'visible' : 'hidden');
+               }
+               {% if current_user.is_authenticated %}
+               (function() {
+                   var since = 0;
+                   setInterval(function() {
+                       $.ajax('{{ url_for('notifications') }}?since=' + since).done(
+                           function(notifications) {
+                               for (var i = 0; i < notifications.length; i++) {
+                                   if (notifications[i].name == 'unread_message_count')
+                                       set_message_count(notifications[i].data);
+                                   since = notifications[i].timestamp;
+                                }
+                            }
+                         );
+                   }, 10000);
+                 });
+                 {% endif %}
+           </script>
+
+
+          <script type="text/javascript">
+            
+                $(function() {
+                    var timer = null;
+                    var xhr = null;
+                    $('.user_popup').hover(
+                        function(event) {
+                            // mouse in event handler
+                            var elem = $(event.currentTarget);
+                            timer = setTimeout(function() {
+                                timer = null;
+                                xhr = $.ajax(
+                                    '/user/' + elem.first().text().trim() + '/popup').done(
+                                        function(data) {
+                                            xhr = null
+                                            // create and display popup here
+                                            elem.popover({
+                                              trigger: 'manual',
+                                              html: true,
+                                              animation: false,
+                                              container: elem,
+                                              content: data
+                                            }).popover('show');
+                                            //flask_moment_render_all();
+                                        }
+                                    );
+                            }, 1000);
+                        },
+                        function(event) {
+                            // mouse out event handler
+                            var elem = $(event.currentTarget);
+                            if (timer) {
+                                clearTimeout(timer);
+                                timer = null;
+                            }
+                            else if (xhr) {
+                                xhr.abort();
+                                xhr = null;
+                            }
+                            else {
+                                // destroy popup here destroy
+                                elem.popover('hide');
+                            }
+                        }
+                    )
+                });
+
+          </script>
+
+
+
+            <!-- Navbar Right Side -->
+            {% if not current_user.is_authenticated %}
+            <div class="navbar-nav">   
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+            {% else %}
+                <a class="nav-item nav-link" href="logout">logout</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+
+            <script type="text/javascript">
+              var autoExpand = function (field) {
+
+              // Reset field height
+              field.style.height = 'inherit';
+
+              // Get the computed styles for the element
+              var computed = window.getComputedStyle(field);
+
+              // Calculate the height
+              var height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+                           + parseInt(computed.getPropertyValue('padding-top'), 10)
+                           + field.scrollHeight
+                           + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+                           + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+
+              field.style.height = height + 'px';
+
+            };
+
+            document.addEventListener('input', function (event) {
+              if (event.target.tagName.toLowerCase() !== 'textarea') return;
+              autoExpand(event.target);
+            }, false);
+          </script>
+
+          <article class="media content-section">
+            <article class="media content-section">
+            <div class="media-body">
+              <div class="article-metadata">
+          <img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/'+ user.image_file) }}">
+            <div class="article-metadata">
+              <h6>
+                <a class="mr-2" href="#" style="color:black;">{{ user.username }}</a>&nbsp
+              <h6>
+                <small class="text-muted">Active: {{ moment(user.last_seen).fromNow() }}</small>
+                <br><br>
+                <div style="text-align: right;"><a class="btn btn-info mb-4" href="{{ url_for('send_message', recipient=user.username) }}">send message</a></div>
+                <small class="text-muted">Registered: {{ moment(user.joined_day).format('lll') }}</small>
+            </div>
+          </article>
+          </div>
+          </div>
+          </article>
+
+          <article class="media content-section">
+            <div class="media-body">
+              <div class="article-metadata">
+          <article class="media content-section">
+              <div class="mr-2">
+                  <small>customers vote<h6>{{ user.followers.count() }}<h6></small><br>
+              </div>
+
+              <!--follow/unfollow button -->
+              {% if current_user.is_authenticated %}
+                  {% if user != current_user %}
+                      {% if not user in current_user.followed %}
+                        <small><a href="{{url_for('follow',username=user.username) }}" class="small">
+                        &nbsp &nbspGood seller</a></small>
+                      {% else %}
+                        <small><a href="{{ url_for('unfollow', username=user.username) }}" class="small">
+                        &nbsp &nbspRemove</a></small>
+                      {% endif %}
+                  {% endif %}
+              {% endif %}
+
+            &nbsp&nbsp&nbsp&nbsp<article class="media content-section">
+                <div class="media-body">
+                  <div class="article-metadata">
+                    <h6>
+                      <small>Items {{ user.username}} sells:</small>&nbsp{% for sell in sold %}{{sell.select_one }} {% endfor %}
+                    <h6>
+                  </div>
+                  <div class="post">{% for desc in p_descrptn %}{{ desc.content }} {% endfor %}</div>
+                </div>
+            </article>
+
+          </article>
+
+              <article class="media content-section">
+              <div class="media-body">
+              <div class="article-metadata">
+                {% for i in p_descrptn %}
+                    {% if i == i %}
+                    <article class="media content-section">
+                    <div class="media-body">
+                    <div class="article-metadata">
+                    <div class="post">
+                      <img class="message-image" src="{{ i.image_file }}">
+                    </div>
+                    </div>
+                    </div>
+                    </article>
+                    {% endif %}
+                {% endfor %}
+              </div>
+              </div>
+              </article>
+
+          </div>
+          </div>
+          </article>
+
+
+
+
+          <p id="demo"></p>
+          <p id="mydemo"></p>
+
+
+              <script>
+                var mylat = '{{ mylat }}';
+                var mylats = parseFloat(mylat)
+                var mylong = '{{ mylng }}';
+                var mylongs = parseFloat(mylong)
+                var mymarker = '{{ current_user.username }}';
+                var usermarker = '{{ user.username }}'
+                //need to be added the customer name on marker
+                var userlat = '{{ lat }}';
+                var userlng = '{{ lng }}';
+                var userlats = parseFloat(userlat)
+                var userlngs = parseFloat(userlng)
+
+                //console.log(mylats)
+                //console.log(mylongs)
+                var map;
+                var marker
+
+                function initMap() {
+                  map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: mylats , lng: mylongs },
+                    zoom: 8
+                  });
+                  //marker = new google.maps.Marker({map:map, position:{lat: mylats  , lng: mylongs },title:mymarker});
+
+                  var directionsService = new google.maps.DirectionsService();
+                  var directionsDisplay = new google.maps.DirectionsRenderer({
+                    map: map
+                  });
+
+                  directionsDisplay.setMap(map);
+
+                  var request = {
+                    origin: {lat:mylats, lng:mylongs},
+                    destination: {lat:userlats , lng:userlngs},
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING
+                  };
+
+                  directionsService.route(request, function(response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                      directionsDisplay.setDirections(response);
+                    }
+                  });
+
+
+                  infoWindow = new google.maps.InfoWindow;
+                  infoWindow.setPosition({lat: userlats,lng: userlngs});
+                  infoWindow.setContent('<h6>{{ user.username }}<h6>');
+                  infoWindow.open(map);
+                  //map.setCenter(pos);
+
+
+                  infoWindow0 = new google.maps.InfoWindow;
+                  infoWindow0.setPosition({lat: mylats,lng: mylongs});
+                  infoWindow0.setContent('<h6>You<h6>');
+                  infoWindow0.open(map);
+                }
+
+              </script>
+
+              <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAemSAE8epiYtrVedY_lFYNJHB094F0M10&callback=initMap"
+              async defer></script>-->
+
+              <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACAQRu4gbCAeLBWWPLI5HEb8dxSfNYCgw&callback=initMap"type="text/javascript">
+              </script>
+
+          <article class="media content-section">
+            <div class="media-body">
+              <div class="article-metadata">
+                <button class="btn btn-primary" onclick="openMap()">hide/show map</button>
+                <div style="display: none;" id="map"></div>
+              </div>
+            </div>
+          </article>
+
+
+            <!--<script>
+              function myFunction() {
+                var x = document.getElementById("map");
+                if (x.style.display === "none") {
+                  x.style.display = "block";
+                } else {
+                  x.style.display = "none";
+                }
+              }
+            </script>-->
+
+            <script>
+              function openMap() {
+                document.getElementById("map").style.display = "block";
+              }
+
+              function closeMap() {
+                document.getElementById("map").style.display = "none";
+              }
+            </script>
+
+
+
+            <script>
+            var x = document.getElementById("demo");
+
+            function getLocation() {
+              if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(showPosition, showError,
+                  { enableHighAccuracy: true, timeout: 31000, maximumAge: 90000 });
+              } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+              }
+            }
+
+            function showPosition(position) {
+              //x.innerHTML = "Latitude: " + position.coords.latitude + 
+              //"<br>Longitude: " + position.coords.longitude;
+              let mylat = position.coords.latitude;
+              let mylng = position.coords.longitude;
+              myPosition(mylat,mylng);
+              console.log(mylat)
+              console.log(mylng)
+              //myPositions(mylat,mylng);
+            }
+
+
+
+            function showError(error) {
+              switch(error.code) {
+                case error.PERMISSION_DENIED:
+                  x.innerHTML = "User denied the request for Geolocation."
+                  break;
+                case error.POSITION_UNAVAILABLE:
+                  x.innerHTML = "Location information is unavailable."
+                  break;
+                case error.TIMEOUT:
+                  x.innerHTML = "The request to get user location timed out."
+                  break;
+                case error.UNKNOWN_ERROR:
+                  x.innerHTML = "An unknown error occurred."
+                  break;
+              }
+            }
+
+
+            </script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+             
+            <script>
+                function myPosition(pos1,pos2) {
+                 let lat = pos1 ;
+                 let lng = pos2;
+                 //console.log(lat);
+                 //console.log(lng);
+
+                 $.ajax({
+                      url: "/api/" + lat +"/"+ lng + "/"
+                  }).done(function(res) {
+                      console.log(res.lat);
+                  });
+              }
+
+            </script>
+
+            <script type="text/javascript">
+              getLocation();
+            </script>
+
+
+        </div>
+      </div>
+    </main>
+
+    <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+
+    <script>
+        $(window).on("load",function(){
+          $(".loader-wrapper").fadeOut("slow");
+        });
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <footer>
+        <div class="foot">
+              BussPower@
+              <a class="nav-item nav-link" href="#">
+              contact</a>
+        </div>
+    </footer>
+</body>
+</html>

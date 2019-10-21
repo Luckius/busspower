@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!--<form class="form-inline" method="POST" action="{{ url_for('sell_select') }}">
+  <div class="form-group">
+    <div class="form-group">
+        <span class="input-group-addon" style="margin-right: 10px;">Select</span><br>
+            <select name="comp_select" class="selectpicker form-control" style="padding-right: 200px;">
+              <option value="WATER">water</option>
+              <option value="CAR">car</option>
+              <option value="MOTOR">motor</option>
+            </select>
+    </div>
+    <button type="submit" class="btn btn-default" style="margin-left: 10px;">Submit</button>
+  </div>
+</form>-->
+
+<!--class="selectpicker form-control"-->
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  <p>Select a new car from the list.</p>&nbsp&nbsp
+  <article class="media content-section">
+  <form id="form1" action="/sell_select" method="POST" enctype="multipart/form-data">
+  <div class="form-group">
+    <div class="form-group">
+      <select id="mySelect" name = "cars" class="theme-pink" style="padding-right:10px;">
+        <option value="Audi">Audi</option>
+        <option value="BMW">BMW</option>
+        <option value="Mercedes">Mercedes</option>
+        <option value="Volvo">Volvo</option>
+      </select>
+    </div>
+  <input type="submit" value="Submit" class="btn btn-outline-info" style="background-color: pink;">
+  </div>
+</form>
+</article>
+<div class="post">
+  <small>See your customers click here</small>
+  <form class="form-inline" method="GET" action="customer">
+    <button type="submit" class="btn btn-primary">customers</button>
+  </form>
+</div>
+</div>
+</div>
+</article>
+
+
+
+<div id="result">
+  <!--{% if car_brand is defined %}
+      You have selected: {{ car_brand }}
+  {% endif %}-->
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  {% for i in sell_selected %}
+      {% if i == i %}
+      <article class="media content-section">
+      <div class="media-body">
+      <div class="article-metadata">
+      {% if current_user == i.author %}
+        <small><a class="mr-2" href="{{ url_for('del_sell_selected', post_id=i.id) }}">&nbsp &nbspdelete</a></small>
+      {% endif %}
+      <div class="post">
+          <p> Thanks {{ i.author.username }} for selling your <h6>{{ i.select_one }}</h6>customers will get to you shortly </p>
+      </div>
+      </div>
+      </div>
+      </article>
+      {% endif %}
+  {% endfor %}
+</div>
+</div>
+</article>
+
+
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  {% for i in selected %}
+      {% if i == i %}
+      <article class="media content-section">
+      <div class="media-body">
+      <div class="article-metadata">
+      {% if current_user == i.author %}
+        <small><a class="mr-2" href="{{ url_for('del_sell_selected', post_id=i.id) }}">&nbsp &nbspdelete</a></small>
+      {% endif %}
+      <div class="post">
+          <p> Thanks {{ i.author.username }} for selling your <h6>{{ i.select_one }}</h6>customers will get to you shortly </p>
+      </div>
+      </div>
+      </div>
+      </article>
+      {% endif %}
+  {% endfor %}
+</div>
+</div>
+</article>
+
+
+</div>
+
+
+{% endblock content %}

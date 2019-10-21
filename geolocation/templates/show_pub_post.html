@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+
+  <article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+    </div>
+    <div class="post">
+    </div>
+  </div>
+  <small>Create post</small>&nbsp&nbsp&nbsp
+  <form class="form-inline" method="GET" action="pub_post/new">
+  <button type="submit" class="btn btn-primary">Post</button>
+  </form>
+</article>
+  
+{% for post in posts.items %}
+    <article style="background-color: #f2f2f2; margin-bottom:0px;" class="media content-section">
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+    </article>
+    <article class="media content-section">
+    <!--<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">-->
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+        {% set user_link %}
+          <span class="user_popup">
+              <a href="#">{{ post.author.username }}</a>
+          </span>
+        {% endset %}
+        {{ user_link }} &nbsp&nbsp
+          <small><a class="mr-2" href="{{ url_for('pub_post', post_id=post.id) }}">proposal</a></small>{{ post.comments | count }}&nbsp&nbsp
+
+          <small class="text-muted">{{ moment(post.date_posted).fromNow() }}</small>
+          {% if current_user == post.author %}
+          <small><a class="mr-2" href="{{ url_for('delete_pub_post', post_id=post.id) }}">&nbsp &nbspdelete</a></small>
+          {% endif %}
+        </div>
+        <h4>
+          <a class="article-title" href="{{ url_for('pub_post', post_id=post.id) }}">{{ post.title }}</a>
+        </h4><br>
+        <div class="post">{{ post.content }}</div>
+      </div>
+    </article>
+  </article>
+
+{% endfor %}
+
+<!--</div>
+</div>
+</article>-->    
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+  {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+      {% if posts.page == page_num %}
+        <a class="btn btn-info mb-4" href="{{ url_for('show_pub_posts', page=page_num) }}">{{ page_num }}</a>
+      {% else %}
+        <a class="btn btn-outline-info mb-4" href="{{ url_for('show_pub_posts', page=page_num) }}">{{ page_num }}</a>
+      {% endif %}
+    {% else %}
+      ...
+    {% endif %}
+  {% endfor %}
+</div>
+</div>
+</article>
+
+</div>
+</div>
+</main>
+
+{% endblock content %}

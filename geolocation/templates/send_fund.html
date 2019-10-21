@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!--<form class="form-inline" method="POST" action="{{ url_for('sell_select') }}">
+  <div class="form-group">
+    <div class="form-group">
+        <span class="input-group-addon" style="margin-right: 10px;">Select</span><br>
+            <select name="comp_select" class="selectpicker form-control" style="padding-right: 200px;">
+              <option value="WATER">water</option>
+              <option value="CAR">car</option>
+              <option value="MOTOR">motor</option>
+            </select>
+    </div>
+    <button type="submit" class="btn btn-default" style="margin-left: 10px;">Submit</button>
+  </div>
+</form>-->
+
+<div style="background-color: black;border-radius: 50px;">
+  <h1 style="color: white;">Tsh {{ amounts }}</h1>
+</div>
+
+<article class="media content-section">
+<div class="media-body">
+<div class="article-metadata">
+  <p>Select a new car from the list.</p>&nbsp&nbsp
+  <article class="media content-section">
+  <form id="form1" action="{{ url_for('send_fund')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
+  <div class="form-group">
+    Amount:<br>
+    <input type="number" id="" placeholder="Amount" name="mypay" min="0" max="500000" required><br><br>
+    Receipient name:<br>
+    <input type="text" id="" placeholder="Enter name" name="thename" required><br><br>
+  <input type="submit" value="Submit" class="btn btn-primary">
+  </div>
+</form>
+</article>
+</div>
+</div>
+</article>
+
+{{ message }}
+
+
+</div>
+
+
+{% endblock content %}

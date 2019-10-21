@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+
+  <article class="media content-section">
+  <div class="media-body">
+  <div class="article-metadata">
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+      	  	<h1>You don't have that permission</h1>
+        <div class="post">
+        	You have no that permission. Please try the following:
+        	<ul>
+        		<li><small>check if that account is belong to you </small></li>
+        		<li><small>try to logout and login again </small></li>
+        	</ul>
+        	or click here to return to the homepage <a href="{{url_for('index')}}"> Home</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+{% endblock content %}

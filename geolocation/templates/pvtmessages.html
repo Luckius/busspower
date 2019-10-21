@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div style="background-color:white;border-radius: 0px;">
+      <h6>&nbsp&nbsp&nbsp{{ ('messages sent to you') }}</h6>
+  </div>
+
+    {% for post in messages %}
+      <article class="media content-section" style="border-radius: 100px;">
+        <article class="media content-section" style="border-radius: 100px;">
+        <div class="media-body" style="border-radius: 100px;">
+          <div class="article-metadata" style="border-radius: 100px">
+            {% set user_link %}
+              <span class="user_popup">
+                  <a href="#">{{ post.author.username }}</a>
+              </span>
+            {% endset %}
+            {{ user_link }}
+            <a class="mr-2" href="{{ url_for('send_message', recipient=post.author.username) }}">{{ post.author.username }}</a>
+            <small class="text-muted">{{ moment(post.timestamp).fromNow() }}</small>
+            <small><a class="mr-2" href="#">&nbsp&nbspdelete</a></small>
+            <small><a style="background-color: blue;border-radius: 100px;color:white;px;" class="mr-2" href="{{ url_for('send_message', recipient=post.author.username)}}">&nbsp&nbspReply&nbsp&nbsp</a></small>
+          </div> 
+            <div class="post" style="border-radius: 1000px;
+            margin-left: 30px; margin-right: 30px;">{{ post.body }}</div>                       
+          </div>
+          </article>
+        </article>
+      
+
+
+    <button class="open-button" onclick="openForm()">Chat</button>
+    <div class="chat-popup" id="myForm">
+      <form method="POST" action="{{ url_for('send_message2') }}" class="form-container">
+        <h1>Chat</h1>
+        {% set user  %} {{ post.author.username }} {% endset %}
+        <label for="msg"><b>Message to {{username}}</b></label>
+        <input class="inputname" type="text" placeholder="Enter name" name="thename" required>
+        <textarea id="code" placeholder="Type message.." name="msg" required></textarea>
+        <button type="submit" class="btn">Send</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+      </form>
+    </div>
+
+    <!--<script>
+      $(document).ready(function(){
+
+        textAreaAdjust(document.getElementById('code') );
+      });
+
+      function textAreaAdjust(o) {
+        o.style.height = "1px";
+        o.style.height = (o.scrollHeight)+"px";
+      }
+    </script>-->
+
+    <script>
+      function openForm() {
+        document.getElementById("myForm").style.display = "block";
+      }
+
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+      }
+    </script>
+
+
+    {% endfor %}
+
+
+{% endblock content %}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>BussPower - {{ title }}</title>
+    {% else %}
+        <title>BussPower</title>
+    {% endif %}
+
+    <style>
+      #map {
+        height: 400px;
+        margin-top: 10px;
+      }
+    </style>
+
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a href="#"><IMG SRC="{{url_for('static',filename='busspower_logo.png')}}" ALT="some text" WIDTH=70 HEIGHT=50 style="background-color: white;"></a>
+          <!--<a class="navbar-brand mr-4" href="/">BussPower</a>-->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            {% if current_user.is_authenticated %}
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('index') }}">Home</a>
+            </div>
+            {% endif %}
+
+
+            {% if current_user.is_authenticated %}
+              <a href="{{ url_for('pvtmessages') }}">
+              {{ ('Chats') }}
+              {% set new_messages = current_user.new_messages() %}
+                  <span id="message_count" class="badge"
+                      style="visibility: {% if new_messages %}visible
+                                         {% else %}hidden {% endif %}; background-color:red;color:white;">
+                      {{ new_messages }}
+                  </span>
+              </a>
+            {% endif %}
+
+           <script>
+               function set_message_count(n) {
+                   $('#message_count').text(n);
+                   $('#message_count').css('visibility', n ? 'visible' : 'hidden');
+               }
+               {% if current_user.is_authenticated %}
+               (function() {
+                   var since = 0;
+                   setInterval(function() {
+                       $.ajax('{{ url_for('notifications') }}?since=' + since).done(
+                           function(notifications) {
+                               for (var i = 0; i < notifications.length; i++) {
+                                   if (notifications[i].name == 'unread_message_count')
+                                       set_message_count(notifications[i].data);
+                                   since = notifications[i].timestamp;
+                                }
+                            }
+                         );
+                   }, 10000);
+                 });
+                 {% endif %}
+           </script>
+
+            <!-- Navbar Right Side -->
+            {% if not current_user.is_authenticated %}
+            <div class="navbar-nav">   
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+            {% else %}
+                <a class="nav-item nav-link" href="logout">logout</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+            <script type="text/javascript">
+              var autoExpand = function (field) {
+
+              // Reset field height
+              field.style.height = 'inherit';
+
+              // Get the computed styles for the element
+              var computed = window.getComputedStyle(field);
+
+              // Calculate the height
+              var height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+                           + parseInt(computed.getPropertyValue('padding-top'), 10)
+                           + field.scrollHeight
+                           + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+                           + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+
+              field.style.height = height + 'px';
+
+            };
+
+            document.addEventListener('input', function (event) {
+              if (event.target.tagName.toLowerCase() !== 'textarea') return;
+              autoExpand(event.target);
+            }, false);
+          </script>
+
+          <article class="media content-section">
+          <img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+          </article>
+         <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ post.author.username }}'s post</a>
+            </div>
+            <h2>
+              <a class="article-title" href="#">{{ post.title }}</a>
+            </h2>
+            <h6><div class="post">{{ post.content }}</div></h6><br><br>
+            <small>Comments below</small><br><br>
+            {% for comment in comments %}
+             <article class="media content-section">
+              <div class="media-body">
+                <div class="article-metadata">
+                  <small><a class="mr-2" href="{{ url_for('get_profesional', username=comment.author.username)  }}">{{ comment.author.username }}</a></small>
+                  <small><a class="mr-2" href="{{ url_for('delete_pub_comment', comment_id=comment.id, post_id=post.id) }}">&nbsp &nbspdelete</a></small>
+                </div>
+                <div class="post">{{ comment.content }}</div>
+              </div>
+              </article>
+            {% endfor%}
+          </div>
+        </article>
+
+          <button class="open-button" onclick="openForm()">Comment here</button>
+          <div class="chat-popup" id="myForm">
+            <form method="POST" action="{{ url_for('pub_post',post_id=post_id) }}" class="form-container">
+              <h1>Your comment</h1>
+              <label for="msg"><b>Comment</b></label>
+              <textarea placeholder="Type message.." name="msg" required></textarea>
+
+              <button type="submit" class="btn">Comment</button>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+          </div>
+
+          <script>
+            function openForm() {
+              document.getElementById("myForm").style.display = "block";
+            }
+
+            function closeForm() {
+              document.getElementById("myForm").style.display = "none";
+            }
+          </script>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!--<h1>class="content-section"</h1>-->
+    <footer>
+        <div class="foot">
+          BussPower@
+          <a class="nav-item nav-link" href="#">
+          contact</a>
+        </div>
+        <div class="loader-wrapper">
+          <span class="loader"><span class="loader-inner"></span></span>
+        </div>
+
+        <script>
+            $(window).on("load",function(){
+              $(".loader-wrapper").fadeOut("slow");
+            });
+        </script>
+    </footer>
+</body>
+</html>

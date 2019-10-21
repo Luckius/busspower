@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>BussPower - {{ title }}</title>
+    {% else %}
+        <title>BussPower</title>
+    {% endif %}
+
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a href="#"><IMG SRC="{{url_for('static',filename='busspower_logo.png')}}" ALT="some text" WIDTH=70 HEIGHT=50 style="background-color: white;"></a>
+          <!--<a class="navbar-brand mr-4" href="/">BussPower</a>-->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+
+          <script type="text/javascript">
+            
+                $(function() {
+                    var timer = null;
+                    var xhr = null;
+                    $('.user_popup').hover(
+                        function(event) {
+                            // mouse in event handler
+                            var elem = $(event.currentTarget);
+                            timer = setTimeout(function() {
+                                timer = null;
+                                xhr = $.ajax(
+                                    '/user/' + elem.first().text().trim() + '/popup').done(
+                                        function(data) {
+                                            xhr = null
+                                            // create and display popup here
+                                            elem.popover({
+                                              trigger: 'manual',
+                                              html: true,
+                                              animation: false,
+                                              container: elem,
+                                              content: data
+                                            }).popover('show');
+                                            flask_moment_render_all();
+            
+                                        }
+                                    );
+                            }, 1000);
+                        },
+                        function(event) {
+                            // mouse out event handler
+                            var elem = $(event.currentTarget);
+                            if (timer) {
+                                clearTimeout(timer);
+                                timer = null;
+                            }
+                            else if (xhr) {
+                                xhr.abort();
+                                xhr = null;
+                            }
+                            else {
+                                // destroy popup here destroy
+                                //elem.popover('destroy');
+                                elem.remove();
+
+                                setTimeout(function(){
+                                   window.location.reload(1);
+                                }, 500);                      
+                            }
+                        }
+                    )
+                });
+          </script>
+
+
+            <!-- Navbar Right Side -->
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <small>Active : {{ moment(user.last_seen).fromNow() }}</small><br>
+          <small>Registed on: {{ moment(user.joined_day).format('lll') }}</small><br>
+          <small>Budget Tsh: {{ user.acc_amounts }}</small><br>
+          <article class="media content-section">
+          <div class="media-body">
+          <div class="article-metadata">
+              <div class="post">
+                <img class="message-image" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
+              </div>
+          </div>
+          </div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <footer>
+        <div class="foot">
+              BussPower@
+              <a class="nav-item nav-link" href="#">
+              contact</a>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+
+

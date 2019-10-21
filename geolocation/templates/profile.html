@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <div class="media-body">
+          <h6 class="account-heading"> You: <small>{{ current_user.username }}</small></h6>
+        </div>
+      </div>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Write short descriptions about the service you have or anything you want to buy</legend>
+                <small>Then post a photo showing your bussnes or something you want to buy! you can fell free to delete them at any time</small>
+                <div class="form-group">
+                    {{ form.content.label(class="form-control-label") }}
+                    {% if form.content.errors %}
+                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.content.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.content(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.photo.label() }}
+                    {{ form.photo(class="form-control-file") }}
+                    {% if form.photo.errors %}
+                        {% for error in form.photo.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+        <small>You have aready filled this details ?</small>
+        <form class="form-inline" method="GET" action="sell_select">
+            <button type="submit" class="btn btn-primary">Next</button>
+        </form>
+    </div>
+
+    <article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+      {% for i in p_descrptn %}
+          {% if i == i %}
+          <article class="media content-section">
+          <div class="media-body">
+          <div class="article-metadata">
+            <h6>{{ i.title }}</h6>
+          {% if current_user == i.author %}
+            <small><a class="mr-2" href="{{ url_for('delete_p_descrptn', post_id=i.id) }}">&nbsp &nbspdelete</a></small>
+          {% endif %}
+          <div class="post">
+            {{ i.content }}
+          </div>
+          <div class="post">
+            <img class="message-image" src="{{ i.image_file }}">
+          </div>
+          </div>
+          </div>
+          </article>
+          {% endif %}
+      {% endfor %}
+    </div>
+    </div>
+    </article>
+
+{% endblock content %}
