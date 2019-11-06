@@ -14,9 +14,9 @@ from flask_mail import Mail
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SECRET_KEY'] = "secrety key"
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///busspower.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:07888095501997Luck@localhost/buss'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost/mydatabase'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -30,7 +30,7 @@ app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'jokamediatz@gmail.com'
-app.config['MAIL_PASSWORD'] = '07888095501997Luck'
+app.config['MAIL_PASSWORD'] = 'mypassword'
 mail = Mail(app)
 moment = Moment(app)
 migrate = Migrate(app ,db)
